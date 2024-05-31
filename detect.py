@@ -1,9 +1,15 @@
 import os
-
+import shutil
 from ultralytics import YOLO
 import cv2
 
 VIDEOS_DIR = 'Input Videos'
+OUTPUT_DIR = 'Output Videos'
+
+if(os.path.exists(OUTPUT_DIR)):
+    shutil.rmtree(OUTPUT_DIR)
+
+os.mkdir(OUTPUT_DIR)
 
 videos = os.listdir(VIDEOS_DIR)
 
@@ -15,7 +21,7 @@ for i in range(3):
 
     H, W, _ = frame.shape
 
-    out = cv2.VideoWriter('Output Videos' + '/' + videos[i], cv2.VideoWriter_fourcc(*'MP4V'), int(cap.get(cv2.CAP_PROP_FPS)), (W, H))
+    out = cv2.VideoWriter(OUTPUT_DIR + '/' + videos[i], cv2.VideoWriter_fourcc(*'MP4V'), int(cap.get(cv2.CAP_PROP_FPS)), (W, H))
 
 
     model = YOLO('./detect/train/weights/best.pt')  # load a custom model
